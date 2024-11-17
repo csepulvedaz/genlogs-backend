@@ -9,6 +9,8 @@ from api.constants.error_constants import VALIDATION_ERROR
 
 # Routes
 from api.controllers.root_controller import router as root_routes
+from api.controllers.carrier_controller import router as carrier_routes
+
 
 # Config
 from api.core.config import (
@@ -36,3 +38,4 @@ async def validation_exception_handler(_, exc: RequestValidationError):
 
 
 app.include_router(root_routes)
+app.include_router(carrier_routes)
