@@ -1,6 +1,5 @@
 import unittest
 from api.repositories.carrier_repository import get_top_carriers_by_direction
-from api.schemas.carrier_schemas import Carrier
 
 
 class TestCarrierRepository(unittest.TestCase):
@@ -29,13 +28,21 @@ class TestCarrierRepository(unittest.TestCase):
         self.assertEqual(carriers[0].name, "UPS Inc.")
         self.assertEqual(carriers[0].trucks_per_day, 11)
 
-    def test_get_top_carriers_by_direction_empty_cities(self):
-        from_city = ""
-        to_city = ""
+    def test_get_top_carriers_by_direction_partial_match(self):
+        from_city = "New"
+        to_city = "Washington"
         carriers = get_top_carriers_by_direction(from_city, to_city)
-        self.assertEqual(len(carriers), 2)
-        self.assertEqual(carriers[0].name, "UPS Inc.")
-        self.assertEqual(carriers[0].trucks_per_day, 11)
+        self.assertEqual(len(carriers), 3)
+        self.assertEqual(carriers[0].name, "Knight-Swift Transport Services")
+        self.assertEqual(carriers[0].trucks_per_day, 10)
+
+    def test_get_top_carriers_by_direction_case_insensitive(self):
+        from_city = "new york"
+        to_city = "washington dc"
+        carriers = get_top_carriers_by_direction(from_city, to_city)
+        self.assertEqual(len(carriers), 3)
+        self.assertEqual(carriers[0].name, "Knight-Swift Transport Services")
+        self.assertEqual(carriers[0].trucks_per_day, 10)
 
 
 if __name__ == "__main__":
